@@ -1,8 +1,6 @@
 #ifndef KREDYT_HPP
 #define KREDYT_HPP
 
-#include <iostream>
-
 class Kredyt
 {
 private:
@@ -34,8 +32,6 @@ double Kredyt::splac_rate()
         double rata = Kredyt::dlug / static_cast< double >(Kredyt::pozostale_raty);
         Kredyt::dlug -= rata;
         Kredyt::pozostale_raty -= 1;
-        std::cout << Kredyt::pozostale_raty << '\n';
-        std::cout << Kredyt::dlug << '\n';
         return rata;
     }
 }

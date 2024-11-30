@@ -14,13 +14,14 @@
 #define CMKT 100
 #define CROB 100
 // Wynagrodzenie poszczególnych pracowników
-#define PAY_INZ 100
+#define PAY_INZ 50
 #define PAY_MAG 100
-#define PAY_MKT 100
-#define PAY_ROB 100
+#define PAY_MKT 150
+#define PAY_ROB 200
 
 #define N_MAX_KRED 6
 #define N 6
+using Pracownik = std::variant< Inz, Mag, Mkt, Rob >;
 
 class Firma
 {
@@ -39,7 +40,7 @@ private:
     int n_mkt;
     int n_rob;
 
-    std::vector< std::unique_ptr< Pracownik > > pracownicy;
+    std::vector< Pracownik > pracownicy;
 
 public:
     void const drukuj_pracownikow();
@@ -71,13 +72,13 @@ void const Firma::drukuj_pracownikow()
         std::cout << "Brak Prackowników!\n";
     }
     else
+
     {
-        std::cout <<"\nMasz obecnie " << Firma::n_prac <<" pracowników:\n";
-        for (int i = 0; i < Firma::n_prac; i++)
+        std::cout << "\nMasz obecnie " << Firma::n_prac << " pracowników:\n";
+        for (const auto& p : Firma::pracownicy)
         {
-            Firma::pracownicy[i]->print();
+            std::visit([](const auto& prac) { prac.print(); }, p);
         }
-        std::cout<<'\n';
     }
 }
 
@@ -102,19 +103,19 @@ void Firma::zatrudnij(int type)
     switch (type)
     {
     case 1:
-        Firma::pracownicy.push_back(std::make_unique< Inz >(CI, PAY_INZ));
+        Firma::pracownicy.emplace_back(Inz{CI, PAY_INZ});
         Firma::n_inz++;
         break;
     case 2:
-        Firma::pracownicy.push_back(std::make_unique< Mag >(CMAG, PAY_MAG));
+        Firma::pracownicy.emplace_back(Mag{CMAG, PAY_MAG});
         Firma::n_mag++;
         break;
     case 3:
-        Firma::pracownicy.push_back(std::make_unique< Mkt >(CMKT, PAY_MKT));
+        Firma::pracownicy.emplace_back(Mkt{CMKT, PAY_MKT});
         Firma::n_mkt++;
         break;
     case 4:
-        Firma::pracownicy.push_back(std::make_unique< Rob >(CROB, PAY_ROB));
+        Firma::pracownicy.emplace_back(Rob{CROB, PAY_ROB});
         Firma::n_rob++;
         break;
     }
@@ -122,8 +123,10 @@ void Firma::zatrudnij(int type)
 
 void Firma::zaplac_wynagrodzenie()
 {
-    Firma::stan_konta -=
+    auto wynagrodzenie =
         Firma::n_inz * PAY_INZ + Firma::n_mag * PAY_MAG + Firma::n_mkt * PAY_MKT + Firma::n_rob * PAY_ROB;
+    Firma::stan_konta -= wynagrodzenie;
+    std::cout << "\nWypłacono pracownikom wynagrodzenie o wysokości: " << wynagrodzenie << '\n';
 }
 
 void Firma::splac_raty()
@@ -144,7 +147,7 @@ void Firma::splac_raty()
             i++;
         }
     }
-    std::cout  << "Aktualna ilość kredytów do spłacenia: " << Firma::n_kredytow << '\n';
+    std::cout << "\nAktualna ilość kredytów do spłacenia: " << Firma::n_kredytow << '\n';
 }
 
 void Firma::otrzymaj_przychod()
@@ -167,6 +170,8 @@ void Firma::otrzymaj_przychod()
         wyprodukowane = pojemnosc;
     }
 
+    std::cout << "\nWyprodukowano " << wyprodukowane << " produktów.\n";
+
     if (popyt >= wyprodukowane)
     {
         przychod = produkt * wyprodukowane;
@@ -175,6 +180,8 @@ void Firma::otrzymaj_przychod()
     {
         przychod = produkt * popyt;
     }
+
+    std::cout << "\nOtrzymany przychód: " << przychod << '\n';
 
     Firma::stan_konta += przychod;
     if (Firma::historia_przych.size() < N)
@@ -186,6 +193,7 @@ void Firma::otrzymaj_przychod()
         Firma::historia_przych.erase(Firma::historia_przych.begin());
         Firma::historia_przych.push_back(przychod);
     }
+    std::cout << "\nHistoria przychodu:\n";
     for (double h : Firma::historia_przych)
     {
         std::cout << h << '\n';
@@ -200,11 +208,14 @@ double const Firma::get_stan_konta()
 double Firma::wartosc_firmy()
 {
     double suma = 0;
+    double wartosc_firmy;
     for (double m : Firma::historia_przych)
     {
         suma += m;
     }
-    return suma / Firma::historia_przych.size();
+    wartosc_firmy = suma / Firma::historia_przych.size();
+    std::cout << "\nWartość firmy wynosi: " << wartosc_firmy << "\n";
+    return wartosc_firmy;
 }
 
 #endif

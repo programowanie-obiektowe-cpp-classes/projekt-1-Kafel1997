@@ -43,7 +43,7 @@ void Gra::akcja_gracza()
     }
     else if (komenda == "zrob")
     {
-        std::cout << "zatrudnij robotyka\n";
+        std::cout << "zatrudnij robotnika\n";
         Gra::firma_.zatrudnij(4);
     }
     else if (komenda == "kredyt")
@@ -102,8 +102,7 @@ void Gra::akcja_gracza()
     }
     else if (komenda == "kt")
     {
-        std::cout << "koniec tury\n";
-
+        std::cout << "\n##### KONIEC MIESIĄCA #####";
         Gra::firma_.zaplac_wynagrodzenie();
         Gra::firma_.splac_raty();
         Gra::firma_.otrzymaj_przychod();
