@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+
 class Pracownik
 {
 protected:
@@ -12,20 +13,21 @@ protected:
 
 public:
     virtual void print() const { std::cout << Pracownik::imie << '\n'; };
+    double get_wynagrodzenie();
     Pracownik();
     Pracownik(double wynagrodzenie);
-    ~Pracownik();
+    virtual ~Pracownik() = default;
 };
 
 class Inz : public Pracownik
 {
 private:
-    double CI;
+    const double Ci;
 
 public:
-    void        print() const override { std::cout << "Inżynier " << Inz::imie << " z wydziału " << Inz::wydzial << '\n'; }
+    void print() const override { std::cout << "Inżynier " << Inz::imie << " z wydziału " << Inz::wydzial << '\n'; }
     std::string wydzial;
-    Inz(double CI, double payInz);
+    Inz(double Ci, double payInz);
 };
 
 class Mag : public Pracownik
@@ -34,7 +36,10 @@ private:
     double CMag;
 
 public:
-    void        print() const override { std::cout << "Magazynier " << Mag::imie << " operator wózka: " << Mag::wozek << '\n'; }
+    void print() const override
+    {
+        std::cout << "Magazynier " << Mag::imie << " operator wózka: " << Mag::wozek << '\n';
+    }
     bool wozek;
     Mag(double CMag, double payMag);
 };
@@ -45,7 +50,10 @@ private:
     double CMkt;
 
 public:
-    void        print() const override { std::cout << "Marketer " << Mkt::imie << " obserwujący: " << Mkt::obserwujacy << '\n'; }
+    void print() const override
+    {
+        std::cout << "Marketer " << Mkt::imie << " obserwujący: " << Mkt::obserwujacy << '\n';
+    }
     int obserwujacy;
     Mkt(double CMkt, double payMkt);
 };
@@ -56,7 +64,7 @@ private:
     double CRob;
 
 public:
-    void        print() const override { std::cout << "Robotnik " << Rob::imie << " rozmiar buta: " << Rob::but << '\n'; }
+    void   print() const override { std::cout << "Robotnik " << Rob::imie << " rozmiar buta: " << Rob::but << '\n'; }
     double but;
     Rob(double CRob, double payRob);
 };
@@ -67,10 +75,12 @@ Pracownik::Pracownik(double wynagrodzenie) : imie{getRandomName()}, wynagrodzeni
 Pracownik::Pracownik() : imie{getRandomName()}, wynagrodzenie{100}
 {}
 
-Pracownik::~Pracownik()
-{}
+double Pracownik::get_wynagrodzenie()
+{
+    return Pracownik::wynagrodzenie;
+}
 
-Inz::Inz(double Ci, double payInz) : CI{Ci}, Pracownik{payInz}, wydzial{"MEiL"}
+Inz::Inz(double Ci, double payInz) : Ci{Ci}, Pracownik{payInz}, wydzial{"MEiL"}
 {}
 Mag::Mag(double CMag, double payMag) : CMag{CMag}, Pracownik{payMag}, wozek{true}
 {}

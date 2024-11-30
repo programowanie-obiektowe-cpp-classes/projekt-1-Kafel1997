@@ -29,30 +29,27 @@ void Gra::akcja_gracza()
     if (komenda == "zinz")
     {
         std::cout << "zatrudnij inzyniera\n";
-        Gra::firma_.zatrudnij_inz();
+        Gra::firma_.zatrudnij(1);
     }
     else if (komenda == "zmag")
     {
-
         std::cout << "zatrudnij magazyniera\n";
-        Gra::firma_.zatrudnij_mag();
+        Gra::firma_.zatrudnij(2);
     }
     else if (komenda == "zmkt")
     {
-
         std::cout << "zatrudnij marketera\n";
-        Gra::firma_.zatrudnij_mkt();
+        Gra::firma_.zatrudnij(3);
     }
     else if (komenda == "zrob")
     {
-
         std::cout << "zatrudnij robotyka\n";
-        Gra::firma_.zatrudnij_rob();
+        Gra::firma_.zatrudnij(4);
     }
     else if (komenda == "kredyt")
     {
         double kwota;
-        int raty;
+        int    raty;
 
         std::cout << "jaka kwota kredytu? Max 100k\n";
         while (true)
@@ -96,12 +93,11 @@ void Gra::akcja_gracza()
             }
         }
 
-        Gra::firma_.wez_kredyt(kwota,raty);
-
+        Gra::firma_.wez_kredyt(kwota, raty);
     }
     else if (komenda == "lp")
     {
-        std::cout << "lista pracownikow:\n";
+        std::cout << "###### lista pracownikow #####\n";
         Gra::firma_.drukuj_pracownikow();
     }
     else if (komenda == "kt")
@@ -112,14 +108,16 @@ void Gra::akcja_gracza()
         Gra::firma_.splac_raty();
         Gra::firma_.otrzymaj_przychod();
 
-        double wartosc = Gra::firma_.get_stan_konta();
-        std::cout << "Stan konta wynosi: " << wartosc << '\n';
+        double stan_konta = Gra::firma_.get_stan_konta();
+        double wartosc_firmy = Gra::firma_.wartosc_firmy();
+        std::cout << "Stan konta wynosi: " << stan_konta << '\n';
 
-        if (wartosc >= WYGRANA)
+        if (wartosc_firmy >= WYGRANA)
         {
             std::cout << "Gratulacje, Wygrałeś!\n";
+            Gra::stan_ = false;
         }
-        else if (wartosc < 0)
+        else if (stan_konta < 0)
         {
             std::cout << "Game Over! :(\n";
             Gra::stan_ = false;
