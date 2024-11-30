@@ -107,7 +107,7 @@ void Gra::akcja_gracza()
         Gra::firma_.splac_raty();
         Gra::firma_.otrzymaj_przychod();
 
-        double stan_konta = Gra::firma_.get_stan_konta();
+        double stan_konta    = Gra::firma_.get_stan_konta();
         double wartosc_firmy = Gra::firma_.wartosc_firmy();
         std::cout << "Stan konta wynosi: " << stan_konta << '\n';
 
