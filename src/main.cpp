@@ -8,8 +8,8 @@ int main()
                  "zatrudnij marketera\nzrob - zatrudnij robotnika\nkredyt - wez kredyt\nkt - koniec tury\n";
     while (true)
     {
-        game.akcja_gracza();
-        if (game.get_stan() == false)
+        game.akcjaGracza();
+        if (game.getStan() == false)
         {
             break;
         }

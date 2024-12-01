@@ -16,13 +16,13 @@ private:
     int   tura_;
 
 public:
-    void akcja_gracza();
-    bool get_stan() { return stan_; }
+    void akcjaGracza();
+    bool getStan() { return stan_; }
     Gra() : stan_{true}, tura_{1} {}
     ~Gra() {}
 };
 
-void Gra::akcja_gracza()
+void Gra::akcjaGracza()
 {
     std::string komenda;
     std::cout << "Miesiąc nr. " << Gra::tura_ << '\n';
@@ -95,27 +95,27 @@ void Gra::akcja_gracza()
             }
         }
 
-        Gra::firma_.wez_kredyt(kwota, raty);
+        Gra::firma_.wezKredyt(kwota, raty);
     }
     else if (komenda == "lp")
     {
         std::cout << "###### lista pracownikow #####\n";
-        Gra::firma_.drukuj_pracownikow();
+        Gra::firma_.drukujPracownikow();
     }
     else if (komenda == "kt")
     {
         std::cout << "\n##### KONIEC MIESIĄCA #####";
         Gra::tura_++;
-        Gra::firma_.zaplac_wynagrodzenie();
-        Gra::firma_.splac_raty();
-        Gra::firma_.otrzymaj_przychod();
+        Gra::firma_.zaplacWynagrodzenie();
+        Gra::firma_.splacRaty();
+        Gra::firma_.otrzymajPrzychod();
 
-        double stan_konta    = Gra::firma_.get_stan_konta();
-        double wartosc_firmy = Gra::firma_.wartosc_firmy();
+        double stan_konta    = Gra::firma_.getStanKonta();
+        double wartoscFirmy = Gra::firma_.wartoscFirmy();
         std::cout << "Stan konta wynosi: " << stan_konta << '\n';
-        std::cout << "\nWartość firmy wynosi: " << wartosc_firmy << "\n";
+        std::cout << "\nWartość firmy wynosi: " << wartoscFirmy << "\n";
 
-        if (wartosc_firmy - Gra::firma_.zadluzenie() >= WYGRANA)
+        if (wartoscFirmy - Gra::firma_.zadluzenie() >= WYGRANA)
         {
             std::cout << "Gratulacje, Wygrałeś!\n";
             Gra::stan_ = false;

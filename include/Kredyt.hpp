@@ -8,8 +8,8 @@ private:
     double dlug_;
 
 public:
-    double splac_rate();
-    double get_dlug();
+    double splacRate();
+    double getDlug();
     Kredyt();
     Kredyt(double kwota, int raty);
     ~Kredyt();
@@ -22,7 +22,7 @@ Kredyt::Kredyt(double kwota, int raty) : pozostale_raty_{raty}, dlug_{kwota}
 Kredyt::~Kredyt()
 {}
 
-double Kredyt::splac_rate()
+double Kredyt::splacRate()
 {
     if (Kredyt::pozostale_raty_ == 0)
     {
@@ -37,7 +37,7 @@ double Kredyt::splac_rate()
     }
 }
 
-double Kredyt::get_dlug()
+double Kredyt::getDlug()
 {
     return Kredyt::dlug_;
 }

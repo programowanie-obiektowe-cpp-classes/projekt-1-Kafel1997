@@ -30,7 +30,7 @@ using Pracownik = std::variant< Inz, Mag, Mkt, Rob >;
 class Firma
 {
 private:
-    const double          oblicz_przychod();
+    const double          obliczPrzychod();
     std::vector< double > historia_przych_;
 
     double                stan_konta_;
@@ -47,18 +47,18 @@ private:
     std::vector< Pracownik > pracownicy;
 
 public:
-    void const drukuj_pracownikow();
+    void const drukujPracownikow();
 
-    void wez_kredyt(double kwota, int czas_splaty);
+    void wezKredyt(double kwota, int czas_splaty);
 
     void zatrudnij(int type);
 
-    void zaplac_wynagrodzenie();
-    void otrzymaj_przychod();
-    void splac_raty();
+    void zaplacWynagrodzenie();
+    void otrzymajPrzychod();
+    void splacRaty();
 
-    double const get_stan_konta();
-    double       wartosc_firmy();
+    double const getStanKonta();
+    double       wartoscFirmy();
     double       zadluzenie();
     Firma();
     ~Firma() = default;
@@ -67,7 +67,7 @@ public:
 Firma::Firma() : stan_konta_{10000.}, n_kredytow_{0}, n_prac_{0}, n_inz_{0}, n_mag_{0}, n_mkt_{0}, n_rob_{0}
 {}
 
-void const Firma::drukuj_pracownikow()
+void const Firma::drukujPracownikow()
 {
     if (Firma::n_prac_ == 0)
     {
@@ -84,11 +84,11 @@ void const Firma::drukuj_pracownikow()
     }
 }
 
-void Firma::wez_kredyt(double kwota, int raty)
+void Firma::wezKredyt(double kwota, int raty)
 {
     if (Firma::n_kredytow_ < N_MAX_KRED)
     {
-        if (Firma::zadluzenie() + kwota > M * Firma::wartosc_firmy())
+        if (Firma::zadluzenie() + kwota > M * Firma::wartoscFirmy())
         {
             std::cout << "Całkowite zadłużenie firmy nie może być większe niż jej wartość razy " << M << "!\n";
         }
@@ -130,7 +130,7 @@ void Firma::zatrudnij(int type)
     }
 }
 
-void Firma::zaplac_wynagrodzenie()
+void Firma::zaplacWynagrodzenie()
 {
     auto wynagrodzenie =
         Firma::n_inz_ * PAY_INZ + Firma::n_mag_ * PAY_MAG + Firma::n_mkt_ * PAY_MKT + Firma::n_rob_ * PAY_ROB;
@@ -138,12 +138,12 @@ void Firma::zaplac_wynagrodzenie()
     std::cout << "\nWypłacono pracownikom wynagrodzenie w wysokości: " << wynagrodzenie << '\n';
 }
 
-void Firma::splac_raty()
+void Firma::splacRaty()
 {
     int i = 0;
     for (Kredyt& k : Firma::kredyty_)
     {
-        double rata = k.splac_rate();
+        double rata = k.splacRate();
         if (rata == 0)
         {
             std::cout << "kredyt nr " << i + 1 << " spłacony! \n";
@@ -159,7 +159,7 @@ void Firma::splac_raty()
     std::cout << "\nAktualna ilość kredytów do spłacenia: " << Firma::n_kredytow_ << '\n';
 }
 
-void Firma::otrzymaj_przychod()
+void Firma::otrzymajPrzychod()
 {
     double produkt, przychod;
     int    pojemnosc, podaz, popyt, wyprodukowane;
@@ -209,12 +209,12 @@ void Firma::otrzymaj_przychod()
     }
 }
 
-double const Firma::get_stan_konta()
+double const Firma::getStanKonta()
 {
     return Firma::stan_konta_;
 }
 
-double Firma::wartosc_firmy()
+double Firma::wartoscFirmy()
 {
     auto dlugosc = Firma::historia_przych_.size();
     if(dlugosc==0)
@@ -224,13 +224,13 @@ double Firma::wartosc_firmy()
     else
     {
         double suma = 0;
-        double wartosc_firmy;
+        double wartoscFirmy;
         for (double m : Firma::historia_przych_)
         {
             suma += m;
         }
-        wartosc_firmy = static_cast<double>(suma / dlugosc);
-        return wartosc_firmy;
+        wartoscFirmy = static_cast<double>(suma / dlugosc);
+        return wartoscFirmy;
     }
 }
 
@@ -245,7 +245,7 @@ double Firma::zadluzenie()
         double zadluzenie = 0;
         for (Kredyt k : Firma::kredyty_)
         {
-            zadluzenie += k.get_dlug();
+            zadluzenie += k.getDlug();
         }
         return zadluzenie;
     }
