@@ -13,18 +13,20 @@ class Gra
 private:
     bool  stan_;
     Firma firma_;
+    int   tura_;
 
 public:
     void akcja_gracza();
     bool get_stan() { return stan_; }
-    Gra() : stan_{true} {}
+    Gra() : stan_{true}, tura_{1} {}
     ~Gra() {}
 };
 
 void Gra::akcja_gracza()
 {
     std::string komenda;
-    std::cout << "podaj akcję do wykonania...\n";
+    std::cout << "Miesiąc nr. " << Gra::tura_ << '\n';
+    std::cout << "\npodaj akcję do wykonania...\n";
     std::cin >> komenda;
     if (komenda == "zinz")
     {
@@ -103,6 +105,7 @@ void Gra::akcja_gracza()
     else if (komenda == "kt")
     {
         std::cout << "\n##### KONIEC MIESIĄCA #####";
+        Gra::tura_++;
         Gra::firma_.zaplac_wynagrodzenie();
         Gra::firma_.splac_raty();
         Gra::firma_.otrzymaj_przychod();
@@ -110,8 +113,9 @@ void Gra::akcja_gracza()
         double stan_konta    = Gra::firma_.get_stan_konta();
         double wartosc_firmy = Gra::firma_.wartosc_firmy();
         std::cout << "Stan konta wynosi: " << stan_konta << '\n';
+        std::cout << "\nWartość firmy wynosi: " << wartosc_firmy << "\n";
 
-        if (wartosc_firmy >= WYGRANA)
+        if (wartosc_firmy - Gra::firma_.zadluzenie() >= WYGRANA)
         {
             std::cout << "Gratulacje, Wygrałeś!\n";
             Gra::stan_ = false;
